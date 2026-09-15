@@ -2,21 +2,21 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#18252d"><meta name="description" content="Мяфчик: большой забег. Маленький платформер по вашей комнате: прыгай по мебели, собери 8 вкусняшек и доберись до любимой игрушки.">
+<meta name="theme-color" content="#18252d"><meta name="description" content="Мяфчик: большой забег. Два уровня про Мяфчика: найди игрушку дома и сбеги следом за курьером в подъезд.">
 <title>Мяфчик — большой забег</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2318252d'/%3E%3Cpath d='M13 47V13l17 10h6l15-10v34z' fill='%23536172'/%3E%3Cpath d='M18 32h9v9h-9zm20 0h9v9h-9z' fill='%23edc573'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="styles.css?v=game-1"><script defer src="engine.js?v=game-1"></script><script defer src="room.js?v=game-1"></script><script defer src="app.js?v=game-1"></script>
+<link rel="stylesheet" href="styles.css?v=game-2"><script defer src="engine.js?v=game-2"></script><script defer src="hallway.js?v=game-2"></script><script defer src="room.js?v=game-2"></script><script defer src="app.js?v=game-2"></script>
 </head>
 <body>
 <main class="app">
-<header class="masthead"><div class="brand"><img src="assets/myafchik-5.jpg" width="48" height="48" alt="Настоящий Мяфчик"><div><h1>Мяфчик<span> / большой забег</span></h1><p>Маленький кот. Очень важная миссия.</p></div></div><span class="level-badge">ДОМАШНЕЕ ПРИКЛЮЧЕНИЕ · 01</span></header>
+<header class="masthead"><div class="brand"><img src="assets/myafchik-5.jpg" width="48" height="48" alt="Настоящий Мяфчик"><div><h1>Мяфчик<span> / большой забег</span></h1><p>Маленький кот. Очень важная миссия.</p></div></div><span class="level-badge" id="level-badge">ПРИКЛЮЧЕНИЕ · 01 / 02</span></header>
 <section class="game-shell" aria-label="Платформер про Мяфчика">
-<div class="hud"><div class="room-label"><span class="tiny-light"></span><span>Та самая комната</span></div><div class="score"><span aria-hidden="true">◆</span><strong id="food-count">0 / 8</strong><span class="food-label">вкусняшек</span></div><div class="hud-actions"><time id="timer">00:00</time><button id="sound" aria-label="Включить звук" aria-pressed="false">Звук: выкл.</button><button id="pause" aria-label="Поставить игру на паузу" title="Пауза — P или Escape" disabled>Ⅱ</button><button id="restart" aria-label="Начать уровень заново" title="Заново — R" disabled>↻</button></div></div>
+<div class="hud"><div class="room-label"><span class="tiny-light"></span><span id="room-name">01 · Та самая комната</span></div><div class="score"><span aria-hidden="true">◆</span><strong id="food-count">0 / 8</strong><span class="food-label">вкусняшек</span></div><div class="hud-actions"><time id="timer">00:00</time><button id="sound" aria-label="Включить звук" aria-pressed="false">Звук: выкл.</button><button id="pause" aria-label="Поставить игру на паузу" title="Пауза — P или Escape" disabled>Ⅱ</button><button id="restart" aria-label="Начать уровень заново" title="Заново — R" disabled>↻</button></div></div>
 <div class="stage" id="stage">
 <canvas id="game" width="960" height="540" tabindex="0" role="application" aria-label="Игра Мяфчик. Движение: стрелки или A и D. Прыжок: пробел. Пауза: Escape." aria-describedby="instructions">Для игры нужен браузер с поддержкой Canvas и JavaScript.</canvas>
-<div class="overlay" id="overlay"><div class="start-card"><p class="overline" id="panel-label">УРОВЕНЬ 01 · ДОМА</p><h2 id="panel-title">Дела подождут.<br><span>Игрушка — нет.</span></h2><p id="panel-copy">Собери 8 вкусняшек, прыгай по мебели<br>и доберись до любимой игрушки.</p><div class="mission-chips" id="mission-chips"><span>8 вкусняшек</span><span>1 любимая игрушка</span><span>∞ попыток</span></div><button class="primary-button" id="play">Погнали! <span aria-hidden="true">→</span></button><p class="start-note" id="start-note">Клубки перепрыгиваем. Мебель — наша.</p></div></div>
+<div class="overlay" id="overlay"><div class="start-card"><p class="overline" id="panel-label">УРОВЕНЬ 01 · ДОМА</p><h2 id="panel-title">Дела подождут.<br><span>Игрушка — нет.</span></h2><p id="panel-copy">Собери 8 вкусняшек, прыгай по мебели<br>и доберись до любимой игрушки.</p><div class="mission-chips" id="mission-chips"><span>2 уровня</span><span>16 вкусняшек</span><span>∞ попыток</span></div><button class="primary-button" id="play">Погнали! <span aria-hidden="true">→</span></button><p class="start-note" id="start-note">Клубки перепрыгиваем. Мебель — наша.</p></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<span class="scene-caption" aria-hidden="true">ТЕРРИТОРИЯ МЯФЧИКА</span>
+<div class="chapter-banner" id="chapter-banner" role="status" aria-live="polite"><span>УРОВЕНЬ 02</span><strong>Следом за курьером</strong><small>Дверь была открыта ровно одну кошачью секунду.</small></div><span class="scene-caption" id="scene-caption" aria-hidden="true">ТЕРРИТОРИЯ МЯФЧИКА</span>
 </div>
 <div class="progress-track" aria-hidden="true"><span id="progress-fill"></span></div>
 <div class="game-bottom"><span id="objective">Сначала вкусняшки. Потом — игрушка.</span><span class="checkpoint-label" id="checkpoint-label">СТАРТ НА КОВРЕ</span></div>
@@ -27,3 +27,4 @@
 <noscript><p class="noscript">Включите JavaScript в браузере, чтобы играть.</p></noscript>
 </main>
 </body></html>
+
